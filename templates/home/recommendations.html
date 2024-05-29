@@ -1,0 +1,25 @@
+{% extends "shared/layout.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class=row>
+
+        {% for movie in movies_info %}
+            <div class="col-sm-3">
+
+                <img src="{{ movie[0] }}" alt="{{ movie[2] }}">
+                <h5>{{ movie[1] }}</h5>
+                
+            </div>
+            <br>
+
+        {% endfor %}
+
+    </div>
+    
+
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+jinja2
+psycopg2
+python-multipart
+scikit-surprise
+numpy
+pandas

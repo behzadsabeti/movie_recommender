@@ -1,0 +1,73 @@
+{% extends "shared/layout.html" %}
+
+{% block content %}
+
+<form method="POST" id="ratingForm">
+    <div class="container">
+        {% for movie in movies_info %}
+            <div class="container">
+                <img src="{{ movie[0] }}" alt="{{ movie[1] }}">
+                <h4>{{ movie[2] }}</h4>
+                <label>
+                    <input type="range" class="form-range" min="1" max="10" step="1" name="ratings" value="5" id="{{ movie[2] }}">
+                    <span class="rating-value">5</span>
+                </label>
+            </div>
+            <br>
+        {% endfor %}
+    </div>
+    <div class="container">
+        <input type="submit" value="Submit" class="btn btn-primary" id="submitBtn">
+    </div>
+</form>
+
+<script>
+    const rangeInputs = document.querySelectorAll('.form-range');
+    const ratingValues = document.querySelectorAll('.rating-value');
+
+    rangeInputs.forEach((input, index) => {
+        input.addEventListener('input', () => {
+            ratingValues[index].textContent = input.value;
+        });
+    });
+
+    const ratingForm = document.getElementById('ratingForm');
+
+    ratingForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        // Create an object to hold the ratings data
+        const ratingsData = {};
+
+        const rangeInputs = document.querySelectorAll('.form-range');
+        rangeInputs.forEach((input) => {
+            const movieId = input.id;
+            const rating = input.value;
+            ratingsData[movieId] = rating;
+        });
+
+        // Send the ratings data as JSON to the API
+        try {
+            const response = await fetch('/show_recommendations', {
+                method: 'POST',
+                body: JSON.stringify(ratingsData),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                // Redirect to the /show_recommendations page on success
+                window.location.href = '/show_recommendations';
+            } else {
+                // Handle errors here, e.g., show an error message to the user
+                console.error('Error:', response);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+
+</script>
+
+{% endblock %}
