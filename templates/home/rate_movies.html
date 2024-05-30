@@ -1,73 +1,98 @@
-{% extends "shared/layout.html" %}
-
-{% block content %}
+{% extends "shared/layout.html" %} {% block content %}
 
 <form method="POST" id="ratingForm">
-    <div class="container">
-        {% for movie in movies_info %}
-            <div class="container">
-                <img src="{{ movie[0] }}" alt="{{ movie[1] }}">
-                <h4>{{ movie[2] }}</h4>
-                <label>
-                    <input type="range" class="form-range" min="1" max="10" step="1" name="ratings" value="5" id="{{ movie[2] }}">
-                    <span class="rating-value">5</span>
-                </label>
-            </div>
-            <br>
-        {% endfor %}
+  <div class="container">
+    <br />
+    <h3>
+      Please take a moment to rate each movie on a scale of 1 to 10. This will
+      further enhance the accuracy of our movie recommender app and ensure that
+      the recommendations align closely with your personal preferences and
+      enjoyment.
+    </h3>
+    <br />
+    {% for movie in movies_info %}
+    <div class="row align-items-center mb-4">
+      <div class="col-md-2">
+        <img
+          src="{{ movie[0] }}"
+          alt="{{ movie[1] }}"
+          class="img-fluid rounded"
+        />
+      </div>
+      <div class="col-md-8">
+        <h4>{{ movie[2] }}</h4>
+      </div>
+      <div class="col-md-2 text-center">
+        <label class="w-100">
+          <input
+            type="range"
+            class="form-range"
+            min="1"
+            max="10"
+            step="1"
+            name="ratings"
+            value="5"
+            id="{{ movie[2] }}"
+          />
+          <span class="rating-value badge bg-primary mt-2">5</span>
+        </label>
+      </div>
     </div>
-    <div class="container">
-        <input type="submit" value="Submit" class="btn btn-primary" id="submitBtn">
-    </div>
+    {% endfor %}
+  </div>
+  <div class="container text-center mt-4">
+    <input
+      type="submit"
+      value="Submit"
+      class="btn btn-primary btn-lg"
+      id="submitBtn"
+    />
+  </div>
 </form>
 
 <script>
-    const rangeInputs = document.querySelectorAll('.form-range');
-    const ratingValues = document.querySelectorAll('.rating-value');
+  document.addEventListener("DOMContentLoaded", () => {
+    const rangeInputs = document.querySelectorAll(".form-range");
 
-    rangeInputs.forEach((input, index) => {
-        input.addEventListener('input', () => {
-            ratingValues[index].textContent = input.value;
-        });
+    rangeInputs.forEach((input) => {
+      const ratingValueSpan = input.nextElementSibling;
+      input.addEventListener("input", () => {
+        ratingValueSpan.textContent = input.value;
+      });
     });
 
-    const ratingForm = document.getElementById('ratingForm');
+    const ratingForm = document.getElementById("ratingForm");
 
-    ratingForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
+    ratingForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
 
-        // Create an object to hold the ratings data
-        const ratingsData = {};
+      const ratingsData = {};
 
-        const rangeInputs = document.querySelectorAll('.form-range');
-        rangeInputs.forEach((input) => {
-            const movieId = input.id;
-            const rating = input.value;
-            ratingsData[movieId] = rating;
+      rangeInputs.forEach((input) => {
+        const movieId = input.id;
+        const rating = input.value;
+        ratingsData[movieId] = rating;
+      });
+
+      try {
+        const response = await fetch("/show_recommendations", {
+          method: "POST",
+          body: JSON.stringify(ratingsData),
+          headers: {
+            "Content-Type": "application/json",
+          },
         });
 
-        // Send the ratings data as JSON to the API
-        try {
-            const response = await fetch('/show_recommendations', {
-                method: 'POST',
-                body: JSON.stringify(ratingsData),
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            if (response.ok) {
-                // Redirect to the /show_recommendations page on success
-                window.location.href = '/show_recommendations';
-            } else {
-                // Handle errors here, e.g., show an error message to the user
-                console.error('Error:', response);
-            }
-        } catch (error) {
-            console.error('Error:', error);
+        if (response.ok) {
+          window.location.href = "/show_recommendations";
+        } else {
+          console.error("Error:", response);
         }
+      } catch (error) {
+        console.error("Error:", error);
+      }
     });
-
+  });
 </script>
 
 {% endblock %}

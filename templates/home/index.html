@@ -1,61 +1,81 @@
-{% extends "shared/layout.html" %}
-
-{% block content %}
+{% extends "shared/layout.html" %} {% block content %}
 
 <form method="POST" action="/rate_movies" id="movieForm">
-    <div class="container">
-        <div class="row">
-            {% for movie in movies %}
-                <div class="col-sm-3">
-                    <div class="card" style="width: 200px; height: auto;">
-                        <div class="movie-card">
-                            <label>
-                                <img src="{{ movie[3] }}" class="card-img-top" alt="{{ movie[1] }}" style="width: 200px; height: auto;">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ movie[1] }}<br>{{ movie[2] }}</h5>
-                                    <input type="checkbox" name="selected_movies" value="{{ movie[0] }}" data-movie-id="{{ movie[0] }}" class="select-checkbox form-check-input">
-                                </div>
-                                
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
+  <div class="container">
+    <br />
+    <h3>
+      Please select the movies that you have watched from the provided list.
+      This will help our movie recommender app suggest more accurate
+      recommendations based on your preferences and viewing history.
+    </h3>
+    <br />
+    <div class="row">
+      {% for movie in movies %}
+      <div class="col-sm-3">
+        <div class="card" style="width: 200px; height: auto">
+          <div class="movie-card">
+            <label>
+              <img
+                src="{{ movie[3] }}"
+                class="card-img-top"
+                alt="{{ movie[1] }}"
+                style="width: 200px; height: auto"
+              />
+              <div class="card-body">
+                <h5 class="card-title">{{ movie[1] }}<br />{{ movie[2] }}</h5>
+                <input
+                  type="checkbox"
+                  name="selected_movies"
+                  value="{{ movie[0] }}"
+                  data-movie-id="{{ movie[0] }}"
+                  class="select-checkbox form-check-input"
+                />
+              </div>
+            </label>
+          </div>
         </div>
+      </div>
+      {% endfor %}
     </div>
-    <div class="container">
-        <input type="submit" value="Submit" class="btn btn-primary" id="submitBtn" style="display: none;">
-    </div>
-    
+  </div>
+  <div class="container">
+    <input
+      type="submit"
+      value="Submit"
+      class="btn btn-primary"
+      id="submitBtn"
+      style="display: none"
+    />
+  </div>
 </form>
 
 <script>
-    // Add a click event listener to the container to handle checkbox selection
-    const movieContainer = document.querySelector('.container');
-    movieContainer.addEventListener('click', (event) => {
-        if (event.target.classList.contains('select-checkbox')) {
-            // Handle checkbox click
-            const checkbox = event.target;
-            const movieId = checkbox.getAttribute('data-movie-id');
-            
-            if (checkbox.checked) {
-                // Select the movie
-                selectedMovies.add(movieId);
-            } else {
-                // Deselect the movie
-                selectedMovies.delete(movieId);
-            }
+  // Add a click event listener to the container to handle checkbox selection
+  const movieContainer = document.querySelector(".container");
+  movieContainer.addEventListener("click", (event) => {
+    if (event.target.classList.contains("select-checkbox")) {
+      // Handle checkbox click
+      const checkbox = event.target;
+      const movieId = checkbox.getAttribute("data-movie-id");
 
-            // Enable or disable the submit button based on selections
-            if (selectedMovies.size > 0) {
-                document.getElementById('submitBtn').style.display = 'block';
-            } else {
-                document.getElementById('submitBtn').style.display = 'none';
-            }
-        }
-    });
+      if (checkbox.checked) {
+        // Select the movie
+        selectedMovies.add(movieId);
+      } else {
+        // Deselect the movie
+        selectedMovies.delete(movieId);
+      }
 
-    const selectedMovies = new Set(); // Create a set to store selected movie IDs
+      // Enable or disable the submit button based on selections
+      if (selectedMovies.size > 0) {
+        document.getElementById("submitBtn").style.display = "block";
+      } else {
+        document.getElementById("submitBtn").style.display = "none";
+      }
+    }
+  });
+
+  const selectedMovies = new Set(); // Create a set to store selected movie IDs
 </script>
 
 {% endblock %}

@@ -3,6 +3,7 @@ from fastapi import Form
 from starlette.requests import Request
 from starlette.templating import Jinja2Templates
 from typing import List, Dict
+import random
 
 from data import create_model
 from services import database_service
@@ -14,8 +15,9 @@ user_ratings = {}
 
 @router.get('/')
 def index(request: Request):
-    movies = database_service.get_top_n_movies(50)
-    return templates.TemplateResponse('home/index.html', {'request': request, "movies": movies})
+    movies = database_service.get_top_n_movies(40)
+    sampled_movies = random.sample(movies, 24)
+    return templates.TemplateResponse('home/index.html', {'request': request, "movies": sampled_movies})
 
 
 @router.post("/rate_movies")

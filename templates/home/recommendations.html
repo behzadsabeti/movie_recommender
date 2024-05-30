@@ -1,25 +1,22 @@
-{% extends "shared/layout.html" %}
-
-{% block content %}
+{% extends "shared/layout.html" %} {% block content %}
 
 <div class="container">
-    <div class=row>
-
-        {% for movie in movies_info %}
-            <div class="col-sm-3">
-
-                <img src="{{ movie[0] }}" alt="{{ movie[2] }}">
-                <h5>{{ movie[1] }}</h5>
-                
-            </div>
-            <br>
-
-        {% endfor %}
-
+  <br />
+  <h3>
+    Here are your recommended movies. If you've already seen any of them, simply
+    reload the page for new suggestions!
+  </h3>
+  <br />
+  <div class="row">
+    {% for movie in movies_info %}
+    <div class="col-sm-3">
+      <img src="{{ movie[0] }}" alt="{{ movie[2] }}" />
+      <h5>{{ movie[1] }}</h5>
     </div>
-    
+    <br />
 
+    {% endfor %}
+  </div>
 </div>
-
 
 {% endblock %}
