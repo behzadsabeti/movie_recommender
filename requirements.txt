@@ -4,5 +4,5 @@ jinja2
 psycopg2
 python-multipart
 scikit-surprise
-numpy
+numpy==1.14.5
 pandas
