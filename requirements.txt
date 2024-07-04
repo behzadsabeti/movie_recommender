@@ -3,6 +3,6 @@ uvicorn
 jinja2
 psycopg2
 python-multipart
-scikit-surprise==1.1.1
-numpy>=1.19.5  
+scikit-surprise
+numpy==1.26.4
 pandas
