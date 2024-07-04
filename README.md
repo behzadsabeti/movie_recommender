@@ -1,6 +1,6 @@
 # Movie Recommender
 
-A simple movie recommender system built with Python and FastAPI.
+A simple movie recommender system built with Python and FastAPI. [Demo](https://movierecommender-production-5344.up.railway.app/)
 
 ## Description
 
